@@ -2,7 +2,7 @@
 
 [![CMake](https://github.com/Algorithms-and-Data-Structures-2021/semester-work-template/actions/workflows/cmake.yml/badge.svg)](https://github.com/Algorithms-and-Data-Structures-2021/semester-work-template/actions/workflows/cmake.yml)
 
-*TBD: реализация бенчмарков, README, доработка презентации и отчета, снять видео
+*TBD: реализация бенчмарков, README, доработка презентации и отчета, снять видео*
 
 _Краткое описание семестрового проекта._
 
