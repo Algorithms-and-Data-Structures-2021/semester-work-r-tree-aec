@@ -1,39 +1,39 @@
-import argparse
+import csv  # writer
+import random as r  # randint
+import os  # mkdir
 
-DEFAULT_DESCRIPTION = 'CSV dataset generator script demo.'
-DEFAULT_SAMPLES = 100
+NUM_OF_ELEMENTS = [100, 500, 1000, 5000, 10000, 25000, 50000, 100000, 500000, 1000000]
+AMOUNT_OF_FOLDERS = 10
 
 
-def parse_args():
-    """
-    Парсинг аргументов командной строки (CLI).
-    :return интерфейс для работы с аргументами.
+def coord_gen():
+    x_min = r.randint(0, 1e9 - 1)
+    x_max = r.randint(x_min + 1, 1e9)
 
-    Больше информации на https://docs.python.org/3.7/howto/argparse.html
-    """
-    parser = argparse.ArgumentParser(description=DEFAULT_DESCRIPTION)
+    y_min = r.randint(0, 1e9 - 1)
+    y_max = r.randint(y_min, 1e9)
+    return x_min, x_max, y_min, y_max
 
-    parser.add_argument('output',
-                        type=str,
-                        help='output CSV file, e.g. data/output.csv')
 
-    parser.add_argument('--samples',
-                        type=int,
-                        default=DEFAULT_SAMPLES,
-                        help='number of samples to generate (default: {})'.format(DEFAULT_SAMPLES))
+def write_to_file(data_size: int, index: int):
+    with open(f'data_{index+1}/{data_size}.csv', 'w', newline='') as csv_file_to_write:
+        csv_writer = csv.writer(csv_file_to_write)
+        for step in range(data_size):
+            x_min, x_max, y_min, y_max = coord_gen()
+            csv_writer.writerow([step + 1, x_min, x_max, y_min, y_max])
 
-    return parser.parse_args()
+
+def creation_of_only_arslanov_knows_amount_files():
+    for i in range(AMOUNT_OF_FOLDERS):
+        try:
+            os.mkdir(f"data_{i+1}")
+        except FileExistsError as err:
+            print("Folder exists!")
+            return err
+
+        for data_size in NUM_OF_ELEMENTS:
+            write_to_file(data_size, i)
 
 
 if __name__ == '__main__':
-    args = parse_args()
-
-    # валидация аргументов
-    if args.samples < 0:
-        raise ValueError('Number of samples must be greater than 0.')
-
-    # запись данных в файл
-    with open(args.output, 'w') as file:
-        for i in range(args.samples - 1):
-            file.write('{},'.format(i))
-        file.write(str(args.samples - 1))
+    creation_of_only_arslanov_knows_amount_files()
