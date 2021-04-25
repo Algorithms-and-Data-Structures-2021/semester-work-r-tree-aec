@@ -2,13 +2,15 @@
 
 [![CMake](https://github.com/Algorithms-and-Data-Structures-2021/semester-work-template/actions/workflows/cmake.yml/badge.svg)](https://github.com/Algorithms-and-Data-Structures-2021/semester-work-template/actions/workflows/cmake.yml)
 
+*TBD: реализация бенчмарков, README, доработка презентации и отчета, снять видео
+
 _Краткое описание семестрового проекта._
 
-- _Реализуется R-ерево?_
+- _Реализуется R-дерево_
 - _Представляет собой дерево поиска_
 - _Повсеместно используется в географических данных_
 - _Основные операции - вставка (insert), поиск (search), удаление (remove)_
-- _Сложность операций: 
+- _*Сложность операций:*_ 
 - _Вставка - O(log n), где  n - количество node;_
 - _Поиск - O(log m(n)), где m - минимальное количество детей у одной node;_
 - _Удаление - O(log m(n))._
