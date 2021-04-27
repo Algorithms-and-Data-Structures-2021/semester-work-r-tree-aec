@@ -9,8 +9,8 @@ using namespace std;
 
 namespace itis {
   const int dimensions = 2;
-  const int max_nodes = 8;
-  const int min_nodes = max_nodes / 2;
+  const int max_nodes = 10000;
+  const int min_nodes = 5000;
 
 
   struct RTree

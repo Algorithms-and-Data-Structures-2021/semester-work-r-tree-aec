@@ -7,11 +7,11 @@ AMOUNT_OF_FOLDERS = 10
 
 
 def coord_gen():
-    x_min = r.randint(0, 1e9 - 1)
-    x_max = r.randint(x_min + 1, 1e9)
+    x_min = r.randint(0, 1e6 - 1)
+    x_max = r.randint(x_min + 1, 1e6)
 
-    y_min = r.randint(0, 1e9 - 1)
-    y_max = r.randint(y_min, 1e9)
+    y_min = r.randint(0, 1e6 - 1)
+    y_max = r.randint(y_min, 1e6)
     return x_min, x_max, y_min, y_max
 
 
@@ -20,7 +20,7 @@ def write_to_file(data_size: int, index: int):
         csv_writer = csv.writer(csv_file_to_write)
         for step in range(data_size):
             x_min, x_max, y_min, y_max = coord_gen()
-            csv_writer.writerow([step + 1, x_min, x_max, y_min, y_max])
+            csv_writer.writerow([step + 1, x_min, y_min, x_max, y_max])
 
 
 def creation_of_only_arslanov_knows_amount_files():
