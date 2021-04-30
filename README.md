@@ -55,7 +55,7 @@ git clone https://github.com/Algorithms-and-Data-Structures-2021/semester-work-r
 
 Генерация тестового набора данных в формате [comma-seperated values (CSV)](https://en.wikipedia.org/wiki/Comma-separated_values).
 Данные генерирует скрипт, написанный на языке Python (dataset/generate_csv_dataset.py). Он генерирует строки формата:
-_"<number>, <xmin>, <ymin>, <xmax>, <ymax>"_
+"<number>, <xmin>, <ymin>, <xmax>, <ymax>"
 
 При запуске скрипта генерируется 10 папок, количество строк данных в файлах: 100, 500, 1000, 5000, 10000, 25000, 50000, 100000, 500000, 1000000.
 
