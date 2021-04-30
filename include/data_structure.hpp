@@ -1,16 +1,15 @@
 #pragma once
-#include <stdio.h>
-#include <math.h>
-#include <assert.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
 
 using namespace std;
 // Заголовочный файл с объявлением структуры данных
 
 namespace itis {
-  const int dimensions = 2;
-  const int max_nodes = 10000;
-  const int min_nodes = 5000;
+  inline constexpr int dimensions = 2;
+  inline constexpr int max_nodes = 10000;
+  inline constexpr int min_nodes = 5000;
 
 
   struct RTree
@@ -23,10 +22,10 @@ namespace itis {
     virtual ~RTree();
 
     // Вставка записи
-    void Insert(const int a_min[dimensions], const int a_max[dimensions], const int& a_dataId);
+    void Insert(const int a_min[dimensions], const int a_max[dimensions], int a_dataId);
 
     // Удаление записи
-    void Remove(const int a_min[dimensions], const int a_max[dimensions], const int& a_dataId);
+    void Remove(const int a_min[dimensions], const int a_max[dimensions], int a_dataId);
 
 
     // Найти все в прямоугольнике поиска

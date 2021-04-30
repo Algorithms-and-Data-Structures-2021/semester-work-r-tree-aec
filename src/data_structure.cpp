@@ -2,9 +2,6 @@
 
 namespace itis {
   RTree::RTree() {
-    assert(max_nodes > min_nodes);
-    assert(min_nodes > 0);
-    assert(sizeof(int) == sizeof(void*) || sizeof(int) == sizeof(int));
     root = LocateNode();
     root->level = 0;
   }
@@ -13,12 +10,7 @@ namespace itis {
     RemoveAllRec(root);
   }
 
-  void RTree::Insert(const int *a_min, const int *a_max, const int &a_dataId) {
-    for(int index=0; index < dimensions; ++index)
-    {
-      assert(a_min[index] <= a_max[index]);
-    }
-
+  void RTree::Insert(const int *a_min, const int *a_max, int a_dataId) {
     Rect rect;
 
     for(int axis=0; axis < dimensions; ++axis)
@@ -31,13 +23,7 @@ namespace itis {
 
   }
 
-  void RTree::Remove(const int *a_min, const int *a_max, const int &a_dataId) {
-
-    for(int index=0; index < dimensions; ++index)
-    {
-      assert(a_min[index] <= a_max[index]);
-    }
-
+  void RTree::Remove(const int *a_min, const int *a_max, int a_dataId) {
     Rect rect;
 
     for(int axis=0; axis < dimensions; ++axis)
@@ -49,12 +35,6 @@ namespace itis {
   }
 
   int RTree::Search(const int *a_min, const int *a_max, __cdecl bool (*a_resultCallback)(int, void *), void *a_context) {
-
-    for(int index=0; index < dimensions; ++index)
-    {
-      assert(a_min[index] <= a_max[index]);
-    }
-
     Rect rect;
 
     for(int axis=0; axis < dimensions; ++axis)
@@ -102,10 +82,6 @@ namespace itis {
   }
 
   bool RTree::InsertRectRec(Rect *a_rect, const int &a_id, Node *a_node, Node **a_newNode, int a_level) {
-
-    assert(a_rect && a_node && a_newNode);
-    assert(a_level >= 0 && a_level <= a_node->level);
-
     int index;
     Branch branch;
     Node* otherNode;
@@ -137,21 +113,11 @@ namespace itis {
     }
     else
     {
-      assert(0);
       return false;
     }
   }
 
   bool RTree::InsertRect(Rect *a_rect, const int &a_id, Node **a_root, int a_level) {
-
-    assert(a_rect && a_root);
-    assert(a_level >= 0 && a_level <= (*a_root)->level);
-    for(int index=0; index < dimensions; ++index)
-    {
-      assert(a_rect->m_min[index] <= a_rect->m_max[index]);
-    }
-
-
     Node* newRoot;
     Node* newNode;
     Branch branch;
@@ -174,9 +140,6 @@ namespace itis {
   }
 
   RTree::Rect RTree::NodeCover(Node *a_node) {
-
-    assert(a_node);
-
     int firstTime = true;
     Rect rect;
     InitRect(&rect);
@@ -198,10 +161,6 @@ namespace itis {
   }
 
   bool RTree::AddBranch(Branch *a_branch, Node *a_node, Node **a_newNode) {
-
-    assert(a_branch);
-    assert(a_node);
-
     if(a_node->m_count < max_nodes)  // Сплит не понадобится
     {
       a_node->m_branch[a_node->m_count] = *a_branch;
@@ -211,27 +170,18 @@ namespace itis {
     }
     else
     {
-      assert(a_newNode);
-
       SplitNode(a_node, a_branch, a_newNode);
       return true;
     }
   }
 
   void RTree::DisconnectBranch(Node *a_node, int a_index) {
-
-    assert(a_node && (a_index >= 0) && (a_index < max_nodes));
-    assert(a_node->m_count > 0);
-
     // Удаляем элемент, заменив его последним элементом, чтобы предотвратить пробелы в массиве
     a_node->m_branch[a_index] = a_node->m_branch[a_node->m_count - 1];
 
   }
 
   int RTree::PickBranch(Rect *a_rect, Node *a_node) {
-
-    assert(a_rect && a_node);
-
     bool firstTime = true;
     float increase;
     float bestIncr =  static_cast<float> (-1);
@@ -264,9 +214,6 @@ namespace itis {
   }
 
   RTree::Rect RTree::CombineRect(Rect *a_rectA, Rect *a_rectB) {
-
-    assert(a_rectA && a_rectB);
-
     Rect newRect;
 
     for(int index = 0; index < dimensions; ++index)
@@ -279,10 +226,6 @@ namespace itis {
   }
 
   void RTree::SplitNode(Node *a_node, Branch *a_branch, Node **a_newNode) {
-
-    assert(a_node);
-    assert(a_branch);
-
     Vars localVars;
     Vars * parVars = &localVars;
     int level;
@@ -298,23 +241,15 @@ namespace itis {
     *a_newNode = LocateNode();
     (*a_newNode)->level = a_node->level = level;
     LoadNodes(a_node, *a_newNode, parVars);
-
-    assert((a_node->m_count + (*a_newNode)->m_count) == parVars->m_total);
   }
 
   float RTree::RectVolume(Rect *a_rect) {
-
-    assert(a_rect);
-
     float volume = static_cast<float> (1);
 
     for(int index=0; index < dimensions; ++index)
     {
       volume *= a_rect->m_max[index] - a_rect->m_min[index];
     }
-
-    assert(volume >= static_cast<float> (0));
-
     return volume;
   }
 
@@ -323,12 +258,6 @@ namespace itis {
   }
 
   void RTree::GetBranches(Node *a_node, Branch *a_branch, Vars *a_parVars) {
-
-    assert(a_node);
-    assert(a_branch);
-
-    assert(a_node->m_count == max_nodes);
-
     // Загружаем буфер branch
     for(int index=0; index < max_nodes; ++index)
     {
@@ -349,9 +278,6 @@ namespace itis {
   }
 
   void RTree::ChoosePartition(Vars *a_parVars, int a_minFill) {
-
-    assert(a_parVars);
-
     float biggestDiff;
     int group, chosen, betterGroup;
 
@@ -419,21 +345,11 @@ namespace itis {
       }
     }
 
-    assert((a_parVars->m_count[0] + a_parVars->m_count[1]) == a_parVars->m_total);
-    assert((a_parVars->m_count[0] >= a_parVars->m_minFill) &&
-           (a_parVars->m_count[1] >= a_parVars->m_minFill));
   }
 
   void RTree::LoadNodes(Node *a_nodeA, Node *a_nodeB, Vars *a_parVars) {
-
-    assert(a_nodeA);
-    assert(a_nodeB);
-    assert(a_parVars);
-
     for(int index=0; index < a_parVars->m_total; ++index)
     {
-      assert(a_parVars->m_partition[index] == 0 || a_parVars->m_partition[index] == 1);
-
       if(a_parVars->m_partition[index] == 0)
       {
         AddBranch(&a_parVars->m_branchBuf[index], a_nodeA, nullptr);
@@ -446,9 +362,6 @@ namespace itis {
   }
 
   void RTree::InitParVars(Vars *a_parVars, int a_maxRects, int a_minFill) {
-
-    assert(a_parVars);
-
     a_parVars->m_count[0] = a_parVars->m_count[1] = 0;
     a_parVars->m_area[0] = a_parVars->m_area[1] = static_cast<float> (0);
     a_parVars->m_total = a_maxRects;
@@ -491,10 +404,6 @@ namespace itis {
   }
 
   void RTree::Classify(int a_index, int a_group, Vars *a_parVars) {
-
-    assert(a_parVars);
-    assert(!a_parVars->m_taken[a_index]);
-
     a_parVars->m_partition[a_index] = a_group;
     a_parVars->m_taken[a_index] = true;
 
@@ -511,10 +420,6 @@ namespace itis {
   }
 
   bool RTree::RemoveRect(Rect *a_rect, const int &a_id, Node **a_root) {
-
-    assert(a_rect && a_root);
-    assert(*a_root);
-
     Node* tempNode;
     ListNode* reInsertList = nullptr;
 
@@ -536,7 +441,6 @@ namespace itis {
 
         ListNode* remLNode = reInsertList;
         reInsertList = reInsertList->m_next;
-        assert(remLNode->m_node);
         delete remLNode->m_node;
         delete remLNode;
       }
@@ -545,9 +449,6 @@ namespace itis {
       if((*a_root)->m_count == 1 && (*a_root)->IsInternalNode())
       {
         tempNode = (*a_root)->m_branch[0].m_child;
-
-        assert(tempNode);
-        assert(*a_root);
         delete *a_root;
         *a_root = tempNode;
       }
@@ -560,10 +461,6 @@ namespace itis {
   }
 
   bool RTree::RemoveRectRec(Rect *a_rect, const int &a_id, Node *a_node, ListNode **a_listNode) {
-
-    assert(a_rect && a_node && a_listNode);
-    assert(a_node->level >= 0);
-
     if(a_node->IsInternalNode())  // не лист
     {
       for(int index = 0; index < a_node->m_count; ++index)
@@ -604,9 +501,6 @@ namespace itis {
   }
 
   bool RTree::Overlap(Rect *a_rectA, Rect *a_rectB) {
-
-    assert(a_rectA && a_rectB);
-
     for(int index=0; index < dimensions; ++index)
     {
       if (a_rectA->m_min[index] > a_rectB->m_max[index] ||
@@ -629,11 +523,6 @@ namespace itis {
   }
 
   bool RTree::Search(Node *a_node, Rect *a_rect, int &a_foundCount, __cdecl bool (*a_resultCallback)(int, void *), void *a_context) {
-
-    assert(a_node);
-    assert(a_node->level >= 0);
-    assert(a_rect);
-
     if(a_node->IsInternalNode()) // Это внутренний узел в дереве
     {
       for(int index=0; index < a_node->m_count; ++index)
@@ -671,10 +560,6 @@ namespace itis {
   }
 
   void RTree::RemoveAllRec(Node *a_node) {
-
-    assert(a_node);
-    assert(a_node->level >= 0);
-
     if(a_node->IsInternalNode()) // Это внутренний узел в дереве
     {
       for(int index=0; index < a_node->m_count; ++index)
@@ -682,7 +567,6 @@ namespace itis {
         RemoveAllRec(a_node->m_branch[index].m_child);
       }
     }
-    assert(a_node);
     delete a_node;
   }
 
