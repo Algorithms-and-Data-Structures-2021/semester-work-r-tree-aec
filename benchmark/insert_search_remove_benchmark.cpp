@@ -34,7 +34,7 @@ int main() {
 
 
 
-  for (int i = 1; i <= 5; i++) { // для каждого из 10 наборов(папки: 01, 02, 03 и т.д.)
+  for (int i = 1; i <= 10; i++) { // для каждого из 10 наборов(папки: 01, 02, 03 и т.д.)
 
       auto input_file = ifstream(path + "data_" + to_string(i) + "\\" + to_string(kSizeDataset) + ".csv");
       if (!input_file.is_open()) {
